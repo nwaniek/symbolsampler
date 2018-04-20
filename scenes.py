@@ -12,7 +12,7 @@ class Scene:
 
     # add objects to the scene
     def addObject(self, obj):
-        self.objects.add(obj)
+        self.objects.append(obj)
 
     # trace a ray through the scene. this is useful to check if a certain
     # movement would lie inside or outside the scene. for instance, if the hit
