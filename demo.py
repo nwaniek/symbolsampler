@@ -21,13 +21,11 @@ live_plot = True
 live_plot_ticks = 1000
 test_scene_boundaries = True
 
-
-np.random.seed(1335)
-
-# integration time width (in s)
+# integration time width. this is mostly required to retrieve good values from
+# the samplers that are used within the Agent class
 dt   = 0.1
-# duration of the simulation (in s)
-Tmax = 100000
+# duration of the simulation
+Tmax = 300000
 
 # lists to keep track of the agent position
 Xs = []
@@ -155,10 +153,10 @@ while t < max_ticks:
     # in case live-plotting is enabled, setup or plot
     if live_plot:
         if t == 0:
-            agent_pos_plot, = ax0.plot(Xs, Ys)
+            # agent_pos_plot, = ax0.plot(Xs, Ys)
             particle_plot, = ax0.plot(particles[0:c, 0], particles[0:c, 1], 'o', color='red')
         elif t % live_plot_ticks == 0 or t == max_ticks:
-            agent_pos_plot.set_data(Xs, Ys)
+            # agent_pos_plot.set_data(Xs, Ys)
             particle_plot.set_data(particles[0:c, 0], particles[0:c, 1])
             ax0.set_title('{}'.format(t * dt))
             ax0.relim()
