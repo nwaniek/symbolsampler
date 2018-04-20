@@ -8,8 +8,8 @@ from scenes import Square, Circular, TMaze, Triangular
 from agent import Agent2D as Agent
 
 agent = Agent()
-scene = Square()
-#scene = TMaze()
+#scene = Square()
+scene = TMaze()
 #scene = Circular()
 #scene = Triangular()
 
@@ -47,7 +47,7 @@ mindist = 0.2
 maxdist = 5.0 * mindist
 
 # memory trace and impact of inter-particle Push/Pull dynamics
-mem = 0.9
+mem = 0.8
 alpha = 0.02
 
 
@@ -159,6 +159,8 @@ while t < max_ticks:
             # agent_pos_plot.set_data(Xs, Ys)
             particle_plot.set_data(particles[0:c, 0], particles[0:c, 1])
             ax0.set_title('{}'.format(t * dt))
+            ax0.set_xlim([-1.2, 1.2])
+            ax0.set_ylim([-1.2, 1.2])
             ax0.relim()
             ax0.autoscale_view()
             fig.canvas.update()
