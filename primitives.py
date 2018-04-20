@@ -30,9 +30,9 @@ class HitRecord:
 # A triangle has three points (in 3D space) by which it is specified
 class Triangle:
     def __init__(self, A, B, C):
-        self.A = A
-        self.B = B
-        self.C = C
+        self.A = np.asarray(A)
+        self.B = np.asarray(B)
+        self.C = np.asarray(C)
 
     def intersect(self, ray):
         # result: hit record
@@ -158,8 +158,8 @@ class Cylinder:
 # A wall between two points and a specific height
 class Wall:
     def __init__(self, X0, X1, height=0.5):
-        self.X0 = X0
-        self.X1 = X1
+        self.X0 = np.asarray(X0)
+        self.X1 = np.asarray(X1)
         self.height = height
 
         # A wall is made of two triangles
@@ -182,6 +182,32 @@ class Wall:
         else:
             hr.hit = hr1.hit
             return t1, hr
+
+
+# A wall of a list of 3D points
+class PolyWall:
+    def __init__(self, Xs, height=0.5):
+        self.Xs = Xs
+        self.walls = []
+
+        # convert all points to consecutive walls
+        for i in range(len(Xs)):
+            self.walls.append(Wall(Xs[i], Xs[(i+1) % len(Xs)], height))
+
+    def intersect(self, ray):
+        dist_min = np.inf
+        dist = np.inf
+
+        hr = HitRecord(-1, np.array([np.inf, np.inf, np.inf]))
+
+        # test ray intersection with each wall
+        for w in self.walls:
+            dist, local_hr = w.intersect(ray)
+            if dist < dist_min:
+                dist_min = dist
+                hr.hit = local_hr.hit
+
+        return dist_min, hr
 
 
 

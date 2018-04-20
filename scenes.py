@@ -2,7 +2,7 @@
 
 import numpy as np
 from numpy import linalg as LA
-from primitives import Ray, HitRecord, AABox, Wall, Cylinder
+from primitives import Ray, HitRecord, AABox, Wall, Cylinder, PolyWall
 
 # A scene describes a world in which an agent can move around. It can be built
 # using primitives (objects).
@@ -20,13 +20,13 @@ class Scene:
     # would run into a wall.
     def trace(self, ray):
         # default return value
-        hr = HitRecord(-1, np.array([inf, inf, inf]))
+        hr = HitRecord(-1, np.array([np.inf, np.inf, np.inf]))
 
         min_dist = np.inf
         i = 0
         for o in self.objects:
             dist, local_hr = o.intersect(ray)
-            if dist >= 0.0 and d <= min_dist:
+            if dist >= 0.0 and dist <= min_dist:
                 min_dist = dist
                 hr.id = i
                 hr.hit = local_hr.hit
@@ -93,14 +93,37 @@ class Circular(Scene):
         return self.isInside(B)
 
 
+
 class TMaze(Scene):
     def __init__(self):
         super(TMaze, self).__init__()
 
-
+        # the polywall is constructed by all points of the T in
+        # counter-clockwise direction
+        self.addObject(
+                PolyWall([
+                    [-0.33, -1.00, 0.0],
+                    [ 0.33, -1.00, 0.0],
+                    [ 0.33,  0.33, 0.0],
+                    [ 1.00,  0.33, 0.0],
+                    [ 1.00,  1.00, 0.0],
+                    [-1.00,  1.00, 0.0],
+                    [-1.00,  0.33, 0.0],
+                    [-0.33,  0.33, 0.0]
+                    ])
+                )
 
 
 
 class Triangular(Scene):
     def __init__(self):
         super(Triangular, self).__init__()
+
+
+        self.addObject(
+                PolyWall([
+                    [-1.0,  0.0, 0.0],
+                    [ 1.0, -1.0, 0.0],
+                    [ 1.0,  1.0, 0.0]
+                    ])
+                )
