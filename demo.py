@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
-import os, sys, math
+import os, sys, math, argparse
 import numpy as np
 import matplotlib.pyplot as plt
 
 from scenes import Square, Circular, TMaze, Triangular
 from agent import Agent2D as Agent
+
+# TODO: parser
 
 agent = Agent()
 #scene = Square()
@@ -21,9 +23,6 @@ live_plot = True
 live_plot_ticks = 1000
 test_scene_boundaries = True
 
-# integration time width. this is mostly required to retrieve good values from
-# the samplers that are used within the Agent class
-dt   = 0.1
 # duration of the simulation
 Tmax = 300000
 
@@ -50,6 +49,16 @@ maxdist = 5.0 * mindist
 mem = 0.8
 alpha = 0.02
 
+#
+# Additional variables
+#
+
+# integration time step (in s). this is only required to retrieve good values
+# from the samplers that are used within the Agent class, as this class is also
+# used in other simulations where it is necessary to specify real units. Here,
+# the value is chosen arbitrarily
+dt   = 0.1
+
 
 # helper function to prepare plotting and avoiding duplicate code
 def prepare_plot():
@@ -68,6 +77,8 @@ if live_plot:
 # tick setup
 t = 0
 max_ticks = math.ceil(Tmax / dt)
+
+
 
 # simulation main loop
 while t < max_ticks:
@@ -178,7 +189,9 @@ else:
     fig, ax0 = prepare_plot()
     # ax0.plot(Xs, Ys)
     particle_plot, = ax0.plot(particles[0:c, 0], particles[0:c, 1], 'o', color='red')
-
 plt.show()
+
+# TODO: additional figure in paper quality
+
 
 
