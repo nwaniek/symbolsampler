@@ -3,17 +3,14 @@
 import os, sys, math, argparse
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.path import Path
+import matplotlib.patches as patches
 
 from scenes import Square, Circular, TMaze, Triangular
 from agent import Agent2D as Agent
 
-# TODO: parser
 
-agent = Agent()
-#scene = Square()
-scene = TMaze()
-#scene = Circular()
-#scene = Triangular()
+
 
 #
 # Simulation Setup
@@ -24,7 +21,7 @@ live_plot_ticks = 1000
 test_scene_boundaries = True
 
 # duration of the simulation
-Tmax = 300000
+Tmax = 100000
 
 # lists to keep track of the agent position
 Xs = []
@@ -60,12 +57,60 @@ alpha = 0.02
 dt   = 0.1
 
 
+
+#
+# The parser will read arguments that are passed to this demo script
+#
+parser = argparse.ArgumentParser(prog='demo.py', description="closes packing of particles with minimal distance")
+parser.add_argument('--live-plot', default=live_plot, action='store_true')
+parser.add_argument('--TMax', type=int, default=Tmax, help='Maximal duration of the simulation')
+parser.add_argument('--seed', type=int, default=-1, help='Seed for the random number generator')
+parser.add_argument('--mindist', type=float, default=mindist, help='Minimal distance for Push-Pull interactions')
+parser.add_argument('--maxdist', type=float, default=maxdist, help='Maximal distance for Push-Pull interactions')
+parser.add_argument('--mem', type=float, default=mem, help="Memory trace plasticity in (0,1)")
+parser.add_argument('--alpha', type=float, default=alpha, help="Push/Pull interaction strength")
+parser.add_argument('scene', help="The maze to simulate. One of: Square, Circular, TMaze, Triangular")
+args = parser.parse_args()
+
+
+# read out the variables from the parser
+live_plot = args.live_plot
+Tmax = args.TMax
+mindist = args.mindist
+maxdist = args.maxdist
+mem = args.mem
+alpha = args.alpha
+
+# setup the agent and scene
+agent = Agent()
+s = args.scene.lower()
+if s == 'square':
+    scene = Square()
+elif s == 'circular':
+    scene = Circular()
+elif s == 'tmaze':
+    scene = TMaze()
+elif s == 'triangular':
+    scene = Triangular()
+else:
+    print("Unknown scene '{}'".format(args.scene))
+    sys.exit()
+
+# seutp random number generator
+if not (args.seed == -1):
+    np.random.seed(args.seed)
+
+
 # helper function to prepare plotting and avoiding duplicate code
 def prepare_plot():
     fig = plt.figure()
     ax0 = plt.subplot2grid((1,1), (0,0))
     ax0.axis('equal')
     ax0.autoscale(True)
+
+    scenepatch = scene.getScenePatch(linestyle='solid', edgecolor='black', facecolor='none', lw=2)
+    ax0.add_patch(scenepatch)
+
     # ax0.axis([-1.2, 1.2, -1.2, 1.2])
     return fig, ax0
 

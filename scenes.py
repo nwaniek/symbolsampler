@@ -2,6 +2,8 @@
 
 import numpy as np
 from numpy import linalg as LA
+from matplotlib.path import Path
+import matplotlib.patches as patches
 from primitives import Ray, HitRecord, AABox, Wall, Cylinder, PolyWall
 
 # A scene describes a world in which an agent can move around. It can be built
@@ -72,6 +74,24 @@ class Square(Scene):
         return self.isInside(B)
 
 
+    def getScenePatch(self, **kwargs):
+        verts = [
+                (-1.0, -1.0),
+                ( 1.0, -1.0),
+                ( 1.0,  1.0),
+                (-1.0,  1.0),
+                ( 0.0,  0.0)]
+        codes = [Path.MOVETO,
+                 Path.LINETO,
+                 Path.LINETO,
+                 Path.LINETO,
+                 Path.CLOSEPOLY]
+
+        scenepath = Path(verts, codes)
+        return patches.PathPatch(scenepath, **kwargs)
+
+
+
 # The circular scene is also simple to test, therefore again the isValidMove
 # function is overridden
 class Circular(Scene):
@@ -93,6 +113,10 @@ class Circular(Scene):
         return self.isInside(B)
 
 
+    def getScenePatch(self, **kwargs):
+        return patches.Circle((0.0, 0.0), 1.0, **kwargs)
+
+
 
 class TMaze(Scene):
     def __init__(self):
@@ -100,8 +124,7 @@ class TMaze(Scene):
 
         # the polywall is constructed by all points of the T in
         # counter-clockwise direction
-        self.addObject(
-                PolyWall([
+        self.polywall = PolyWall([
                     [-0.33, -1.00, 0.0],
                     [ 0.33, -1.00, 0.0],
                     [ 0.33,  0.33, 0.0],
@@ -111,7 +134,33 @@ class TMaze(Scene):
                     [-1.00,  0.33, 0.0],
                     [-0.33,  0.33, 0.0]
                     ])
-                )
+
+        self.addObject(self.polywall)
+
+    def getScenePatch(self, **kwargs):
+        verts = [
+                (-0.33, -1.00),
+                ( 0.33, -1.00),
+                ( 0.33,  0.33),
+                ( 1.00,  0.33),
+                ( 1.00,  1.00),
+                (-1.00,  1.00),
+                (-1.00,  0.33),
+                (-0.33,  0.33),
+                ( 0.00,  0.00)]
+        codes = [Path.MOVETO,
+                 Path.LINETO,
+                 Path.LINETO,
+                 Path.LINETO,
+                 Path.LINETO,
+                 Path.LINETO,
+                 Path.LINETO,
+                 Path.LINETO,
+                 Path.CLOSEPOLY]
+
+        scenepath = Path(verts, codes)
+        return patches.PathPatch(scenepath, **kwargs)
+
 
 
 
@@ -127,3 +176,19 @@ class Triangular(Scene):
                     [ 1.0,  1.0, 0.0]
                     ])
                 )
+
+
+    def getScenePatch(self, **kwargs):
+        verts = [
+                (-1.0,  0.0),
+                ( 1.0, -1.0),
+                ( 1.0,  1.0),
+                ( 0.0,  0.0)]
+        codes = [Path.MOVETO,
+                 Path.LINETO,
+                 Path.LINETO,
+                 Path.CLOSEPOLY]
+
+        scenepath = Path(verts, codes)
+        return patches.PathPatch(scenepath, **kwargs)
+
