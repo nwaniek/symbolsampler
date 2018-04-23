@@ -10,13 +10,10 @@ from scenes import Square, Circular, TMaze, Triangular
 from agent import Agent2D as Agent
 
 
-
-
 #
-# Simulation Setup
+# Simulation & Visualzation Setup
 #
-
-live_plot = True
+live_plot = False
 live_plot_ticks = 1000
 test_scene_boundaries = True
 
@@ -40,7 +37,7 @@ particles = np.zeros((N, 2))
 
 # minimal and maximal distance of particle interactions, particle plasticity
 mindist = 0.2
-maxdist = 5.0 * mindist
+maxdist = 2.0 * mindist
 
 # memory trace and impact of inter-particle Push/Pull dynamics
 mem = 0.8
@@ -70,6 +67,7 @@ parser.add_argument('--maxdist', type=float, default=maxdist, help='Maximal dist
 parser.add_argument('--mem', type=float, default=mem, help="Memory trace plasticity in (0,1)")
 parser.add_argument('--alpha', type=float, default=alpha, help="Push/Pull interaction strength")
 parser.add_argument('scene', help="The maze to simulate. One of: Square, Circular, TMaze, Triangular")
+parser.add_argument('filename', help="Filename of final figure")
 args = parser.parse_args()
 
 
@@ -108,10 +106,10 @@ def prepare_plot():
     ax0.axis('equal')
     ax0.autoscale(True)
 
+    # get a patch for the scene to render nicely
     scenepatch = scene.getScenePatch(linestyle='solid', edgecolor='black', facecolor='none', lw=2)
     ax0.add_patch(scenepatch)
 
-    # ax0.axis([-1.2, 1.2, -1.2, 1.2])
     return fig, ax0
 
 # setup plotting if necessary
@@ -224,7 +222,7 @@ while t < max_ticks:
 
     t += 1
     if t % 100 == 0:
-        print(t)
+        print(t / 10)
 
 
 # turn off interactive mode of matplotlib or prepare the plot for visualization
@@ -232,11 +230,13 @@ if live_plot:
     plt.ioff()
 else:
     fig, ax0 = prepare_plot()
-    # ax0.plot(Xs, Ys)
-    particle_plot, = ax0.plot(particles[0:c, 0], particles[0:c, 1], 'o', color='red')
-plt.show()
+    particle_plot, = ax0.plot(particles[0:c, 0], particles[0:c, 1], 'o', color='#4b9dda')
+    ax0.set_xlim([-1.2, 1.2])
+    ax0.set_ylim([-1.2, 1.2])
+    plt.axis('off')
 
-# TODO: additional figure in paper quality
+plt.savefig(args.filename, bbox_inches='tight')
+plt.show()
 
 
 
