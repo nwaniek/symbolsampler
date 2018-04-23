@@ -19,7 +19,7 @@
 ./demo.py --hide-final-plot --seed 1337 --Tmax 20000 triangular output/triangular_20000.svg
 
 # get some consecutive images for TMaze
-#./demo.py --hide-final-plot --seed 1337 --Tmax 1000 tmaze output/tmaze_1000.svg
+./demo.py --hide-final-plot --seed 1337 --Tmax 1000 tmaze output/tmaze_1000.svg
 ./demo.py --hide-final-plot --seed 1337 --Tmax 5000 tmaze output/tmaze_5000.svg
 ./demo.py --hide-final-plot --seed 1337 --Tmax 10000 tmaze output/tmaze_10000.svg
-#./demo.py --hide-final-plot --seed 1337 --Tmax 20000 tmaze output/tmaze_20000.svg
+./demo.py --hide-final-plot --seed 1337 --Tmax 20000 tmaze output/tmaze_20000.svg
