@@ -59,8 +59,9 @@ dt   = 0.1
 # The parser will read arguments that are passed to this demo script
 #
 parser = argparse.ArgumentParser(prog='demo.py', description="closes packing of particles with minimal distance")
+parser.add_argument('--hide-final-plot', default=False, action='store_true')
 parser.add_argument('--live-plot', default=live_plot, action='store_true')
-parser.add_argument('--TMax', type=int, default=Tmax, help='Maximal duration of the simulation')
+parser.add_argument('--Tmax', type=int, default=Tmax, help='Maximal duration of the simulation')
 parser.add_argument('--seed', type=int, default=-1, help='Seed for the random number generator')
 parser.add_argument('--mindist', type=float, default=mindist, help='Minimal distance for Push-Pull interactions')
 parser.add_argument('--maxdist', type=float, default=maxdist, help='Maximal distance for Push-Pull interactions')
@@ -73,7 +74,7 @@ args = parser.parse_args()
 
 # read out the variables from the parser
 live_plot = args.live_plot
-Tmax = args.TMax
+Tmax = args.Tmax
 mindist = args.mindist
 maxdist = args.maxdist
 mem = args.mem
@@ -236,7 +237,8 @@ else:
     plt.axis('off')
 
 plt.savefig(args.filename, bbox_inches='tight')
-plt.show()
+if not args.hide_final_plot:
+    plt.show()
 
 
 
