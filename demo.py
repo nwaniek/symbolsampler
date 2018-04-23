@@ -222,7 +222,7 @@ while t < max_ticks:
             fig.canvas.flush_events()
 
     t += 1
-    if t % 100 == 0:
+    if t % 1000 == 0:
         print(t / 10)
 
 
