@@ -1,7 +1,7 @@
 # symbolsampler
 
 This repository contains code to simulate dense packing of circular particles in four different environments. 
-It was used to generate some of the figures in `Nicolai Waniek (2018). Hexagonal Grid Fields Optimally Encode Transitions in Spatiotemporal Sequences. Neural Computation, , 1-35.`.
+It was used to generate some of the figures in `Nicolai Waniek (2018). Hexagonal Grid Fields Optimally Encode Transitions in Spatiotemporal Sequences. Neural Computation, , 1-35`.
 
 Please cite the article if you reuse or extend the code for your purposes.
 
