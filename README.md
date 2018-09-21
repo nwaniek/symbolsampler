@@ -18,3 +18,18 @@ Please cite the article if you reuse or extend the code for your purposes.
   journal = {Neural Computation}
 }
 ```
+
+
+## Examples
+
+### Square Maze, End of Simulation
+![Square Maze, End of Simulation](output/square_20000.svg)
+
+### Circular Maze, End of Simulation
+![Circular Maze, End of Simulation](output/circular_20000.svg)
+
+### Triangular Maze, End of Simulation
+![Triangular Maze, End of Simulation](output/triangular_20000.svg)
+
+### T-Maze, End of Simulation
+![T-Maze, End of Simulation](output/tmaze_20000.svg)
